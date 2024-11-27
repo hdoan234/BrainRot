@@ -1,26 +1,21 @@
+<!-- options.html -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Extension Options</title>
-  <link rel="stylesheet" href="options.css"> <!-- Link to the external CSS file -->
+  <title>Tùy chọn Brainrot AI</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-  <div className="background">
-  <h1>Brain Rotting</h1>
-
-  <label for="mediabox">Set a Value:</label>
-  <input type="text" id="dropbox" placeholder="Import text file">
-
-  <button id="saveButton">Upload</button>
-  <p id="status" style="color: green; display: none;">Settings saved!</p>
-
+  <h1>Tùy chọn Brainrot AI</h1>
+  <label for="brainrotMethod">Method Brainrot:</label>
+  <select id="brainrotMethod">
+    <option value="shuffle">Shuffle sentence</option>
+    <option value="reverse">Reverse sentence</option>
+    <option value="randomWords">Random words</option>
+  </select>
+  <button id="saveButton">Save</button>
+  <p id="status" style="color: green; display: none;">Save the setting</p>
   <script src="options.js"></script>
-  </div>
-
 </body>
-
 </html>

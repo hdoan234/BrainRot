@@ -1,6 +1,7 @@
 // popup.js
 
 // Function to send a print request to the background script
+/*
 function printDocument() {
     const contentToPrint = `
       <html>
@@ -24,6 +25,29 @@ function printDocument() {
       } else {
         console.log("Options page opened successfully.");
       }
+    });
+  });
+  */
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggleButton = document.getElementById('toggleButton');
+  
+    // Lấy trạng thái hiện tại và cập nhật nút
+    chrome.storage.sync.get('brainrotEnabled', (data) => {
+      toggleButton.textContent = data.brainrotEnabled ? 'Disable Brainrot' : 'Enable Brainrot';
+    });
+  
+    // Xử lý sự kiện khi nhấn nút
+    toggleButton.addEventListener('click', () => {
+      chrome.storage.sync.get('brainrotEnabled', (data) => {
+        const newStatus = !data.brainrotEnabled;
+        chrome.storage.sync.set({ brainrotEnabled: newStatus }, () => {
+          toggleButton.textContent = newStatus ? 'Disable Brainrot' : 'Enable Brainrot';
+  
+          // Gửi thông điệp đến background script
+          chrome.runtime.sendMessage({ action: 'toggleBrainrot', enabled: newStatus });
+        });
+      });
     });
   });
   
