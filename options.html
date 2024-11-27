@@ -1,37 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Extension Options</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-    h1 {
-      color: #333;
-    }
-    label {
-      display: block;
-      margin: 10px 0 5px;
-    }
-    button {
-      margin-top: 20px;
-    }
-  </style>
+  <link rel="stylesheet" href="options.css"> <!-- Link to the external CSS file -->
 </head>
+
 <body>
-  <h1>Extension Settings</h1>
-  <label for="setting1">Enable Feature:</label>
-  <input type="checkbox" id="setting1">
+  <div className="background">
+  <h1>Brain Rotting</h1>
 
-  <label for="setting2">Set a Value:</label>
-  <input type="text" id="setting2" placeholder="Enter a value">
+  <label for="mediabox">Set a Value:</label>
+  <input type="text" id="dropbox" placeholder="Import text file">
 
-  <button id="saveButton">Save Settings</button>
+  <button id="saveButton">Upload</button>
   <p id="status" style="color: green; display: none;">Settings saved!</p>
 
   <script src="options.js"></script>
+  </div>
+
 </body>
+
 </html>
