@@ -1,0 +1,56 @@
+.background{
+    color: #3d3d3d;
+    font-size: 10vw;
+    margin-bottom: 20px;
+    font-family: Georgia, Times, 'Times New Roman', serif
+}    
+    body {
+        background-color: #ffffff;
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+
+    h1 {
+        display: flex;
+        justify-content: center;
+        color: #00b7ff;
+        font-size: 10vw;
+        margin-bottom: 20px;
+        font-family: Georgia, Times, 'Times New Roman', serif
+    }
+
+    label {
+        display: block;
+        margin: 10px 0 5px;
+    }
+
+    button {
+        margin-top: 20px;
+    }
+.mediabox{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    background-color: white;
+    height: 3vh;
+    width: auto;
+}
+#dropbox{
+    height: 3vh;
+    width: auto;
+    background-color: rgb(255, 255, 255);
+    margin-left: 2px;
+    color: white;
+    border-radius: 8px;
+}
+#saveButton{
+    height: 3vh;
+    width: auto;
+    padding: 5px;
+    background-color: rgb(65, 185, 255);
+    border-color: azure;
+    margin-left: 2px;
+    color: white;
+    border-radius: 8px;
+
+}
