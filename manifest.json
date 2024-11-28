@@ -3,8 +3,9 @@
     "name": "Brain Rot Extension",
     "version": "1.0",
     "description": "An example Chrome extension.",
-    "permissions": ["tabs", "activeTab", "scripting", "storage"],
+    "permissions": ["aiLanguageModelOriginTrial", "tabs", "activeTab", "scripting", "storage"],
     "host_permissions": ["https://devpost.com/*"],
+    "trial_tokens": ["AjmKnWdCd7qWIYn/hskNqYQ74PvBrq/JdZIMJoOhYs51K1AkQa0JIe2fiUghn9kp5oJnxF551FkR5SUYM10kkAYAAAB4eyJvcmlnaW4iOiJjaHJvbWUtZXh0ZW5zaW9uOi8vaWttcHBqaGxrb2hqbmFqZXBwaWRtYmpvaWtlZmtlaGoiLCJmZWF0dXJlIjoiQUlQcm9tcHRBUElGb3JFeHRlbnNpb24iLCJleHBpcnkiOjE3NjA0ODYzOTl9"],
     "background": {
       "service_worker": "background.js"
     },
@@ -19,7 +20,7 @@
     },
     "content_scripts": [{
       "matches": ["<all_urls>"],
-      "js": ["content_script.js"],
+      "js": ["md2html.js", "content_script.js"],
       "run_at": "document_idle"
     }],
     "options_page": "options.html"

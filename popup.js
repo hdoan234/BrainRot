@@ -39,6 +39,7 @@ function printDocument() {
   
     // Xử lý sự kiện khi nhấn nút
     toggleButton.addEventListener('click', () => {
+      console.log('Button clicked');
       chrome.storage.sync.get('brainrotEnabled', (data) => {
         const newStatus = !data.brainrotEnabled;
         chrome.storage.sync.set({ brainrotEnabled: newStatus }, () => {
