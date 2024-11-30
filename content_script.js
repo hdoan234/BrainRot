@@ -2,8 +2,8 @@ async function brainrotify(content) {
   let response;
   try {
     const session = await ai.languageModel.create({
-      temperature: 1.8,
-      topK: 150,
+      temperature: 1.3,
+      topK: 50,
       format: "plain-text",
       systemPrompt: `You turn a normal text into a brainrot text and much more concise. For example:
 
@@ -14,12 +14,12 @@ async function brainrotify(content) {
       Normal: 'He is in trouble' Brainrot: 'He's in the shadow realm now. 💀'
       Normal: 'You helped me a lot' Brainrot: 'You're a real one, my g. 🙏🔥'
 
-      Make sure to use the words in the examples like "no cap", "skibidi", "rizz", "sigma", "main character", "shadow realm".
+      You HAVE TO USE the words in the examples like "no cap", "skibidi", "rizz", "sigma", "main character", "shadow realm", make it one paragraph and ready to post on social media.
       `,
     });
     const summarizer = await ai.summarizer.create({
       sharedContext: "This is a Linkedin post",
-      length: 'medium',
+      length: 'short',
       format: 'plain-text',
     })
     
@@ -37,9 +37,9 @@ async function brainrotify(content) {
 
   const conv = new showdown.Converter();
 
-  console.log(response);
+  const results = conv.makeHtml(response);
 
-  return conv.makeHtml(response);
+  return results.replace(/<h1/g, '<h4').replace(/<\/h1/g, '</h4');
 }
 
 // Đổi loading chỗ này nè TODO
@@ -94,9 +94,12 @@ function addButtons(posts) {
     const styleReset = clone.style;
 
     img.onclick = () => {
+      img.style.pointer = "none";
+      img.style.opacity = "0.5";
       if (img.brainrot) {
         img.brainrot = false;
         posts[i].innerHTML = cache;
+        img.style.pointer = "pointer";
       } else {
         img.brainrot = true;
         setLoadStyle(posts[i]);        
@@ -105,6 +108,7 @@ function addButtons(posts) {
           posts[i].style = styleReset;
           posts[i].style.maxHeight = "none";
           posts[i].style.display = "block";
+          img.style.pointer = "pointer";
         });
       }
     }
