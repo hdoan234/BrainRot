@@ -62,7 +62,7 @@ const style = document.createElement('style');
 style.textContent = `
   @keyframes fade{
  0%, 100%{
-        opacity: 0;
+        opacity: 0.4;
     }
     50%{
         opacity: 1;
@@ -80,7 +80,7 @@ function setLoadStyle(node) {
 }
 function removeLoadStyle(node) {
   node.classList.remove("fading");
-  node.style.animation = "none";
+  node.style.animation = "";
 }
 
 function traverseAndBrainrot(node, method) {
@@ -116,7 +116,6 @@ function addButtons(posts) {
     posts[i].parentNode.insertBefore(img, posts[i]);
 
     posts[i].style.fontFamily = "cursive , Comic Sans MS,  sans-serif";
-    posts[i].style.gap = "10px";
     img.style.width = "40px";
     img.style.height = "40px";
     img.src = "https://media.tenor.com/FYsjyvi3C7kAAAAi/rupert-cat.gif";
@@ -173,7 +172,7 @@ function addButtons(posts) {
           posts[i].style.display = "block";
           img.style.cursor = "pointer";
           img.style.opacity = "1";
-
+          removeLoadStyle(posts[i]);
           memeOverlay.style.display = "block";
         });
       }
