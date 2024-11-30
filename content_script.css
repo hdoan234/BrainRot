@@ -1,0 +1,13 @@
+@keyframes fade{
+    0%, 100%{
+        opacity: 0;
+    }
+    50%{
+        opacity: 1;
+    }
+}
+
+.fading{
+    animation: fade 1s infinite;
+    color:  #8ed2ffa1;
+}
