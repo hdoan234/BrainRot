@@ -42,21 +42,43 @@ async function brainrotify(content) {
   return results.replace(/<h1/g, '<h4').replace(/<\/h1/g, '</h4');
 }
 
-// Đổi loading chỗ này nè TODO
-function setLoadStyle(node) {
-  // Style của cái post
-  
-  node.style.color = "blue";
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes fade{
+ 0%, 100%{
+        opacity: 0;
+    }
+    50%{
+        opacity: 1;
+    }
+  }
+  .fading{
+    animation: fade 1.5s infinite;
+  }
+`;
+document.head.appendChild(style);
 
-  // Đây là thay chữ trong post
-  node.innerText = "Loading...";
+// Loading style
+function setLoadStyle(node) {
+  node.classList.add("fading"); 
+}
+function removeLoadStyle(node) {
+  node.classList.remove("fading");
+  node.style.animation = "none";
 }
 
 function traverseAndBrainrot(node, method) {
-  const posts = document.querySelectorAll(".feed-shared-update-v2__description")
-  brainrotify(posts[0].innerText).then((res) => {
-    posts[0].innerHTML = res;
-  });
+  const posts = document.querySelectorAll(".feed-shared-update-v2__description");
+  if (posts.length >0){
+    const firstPost = posts[0];
+
+    setLoadStyle(firstPost);
+
+    brainrotify(firstPost.innerText).then((res) => {
+      firstPost.innerHTML = res;
+      removeLoadStyle(firstPost);
+    });
+  }
   // posts.forEach(async (post) => {
   //   post.innerText = await brainrotify(post.innerText);
   // });
@@ -77,6 +99,8 @@ function addButtons(posts) {
 
     posts[i].parentNode.insertBefore(img, posts[i]);
 
+    posts[i].style.fontFamily = "cursive , Comic Sans MS,  sans-serif";
+    posts[i].style.gap = "10px";
     img.style.width = "40px";
     img.style.height = "40px";
     img.src = "https://media.tenor.com/FYsjyvi3C7kAAAAi/rupert-cat.gif";
@@ -127,6 +151,7 @@ chrome.storage.sync.get(['brainrotEnabled', 'brainrotMethod'], (data) => {
 
       const newPosts = Array.from(mutation.addedNodes).filter((node) => node.nodeType === 1 && node.classList.contains('feed-shared-update-v2__description'));
 
+     
       if (!newPosts.length) {
         return;
       }
