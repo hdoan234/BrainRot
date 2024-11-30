@@ -2,19 +2,34 @@ async function brainrotify(content) {
   let response;
   try {
     const session = await ai.languageModel.create({
-      temperature: 1.3,
-      topK: 100,
-      format: "markdown",
-      systemPrompt: `Pretend you’re a chaotic Gen-Z influencer on TikTok, explaining something to your followers in a concise way. Rewrite the following text in exaggerated internet slang, using phrases like 'skibidi,' 'sigma,' 'no cap,' and chaotic energy. Include emojis for effect but don't include text styling like bold or italic or header text. Here are some examples:
+      temperature: 1.8,
+      topK: 150,
+      format: "plain-text",
+      systemPrompt: `You turn a normal text into a brainrot text and much more concise. For example:
 
       Normal: 'I'm hanging out with my family this weekend.' Brainrot: 'Boutta skibidi with the fam this weekend, no cap. 🤙🔥'
-      Normal: 'What are you doing today?' Brainrot: 'Yo fr, what the skibidi you on today, bruh? 💀'`,
-    });
+      Normal: 'What are you doing today?' Brainrot: 'Yo fr, what the skibidi you on today, bruh? 💀'
+      Normal: 'He is so charismatic' Brainrot: 'Bro has so much rizz, he's a sigma for sure. 🚀🔥'
+      Normal: 'I was driving my cool car' Brainrot: 'I was cruising my whip, giving main character energy. 🚗🔥'
+      Normal: 'He is in trouble' Brainrot: 'He's in the shadow realm now. 💀'
+      Normal: 'You helped me a lot' Brainrot: 'You're a real one, my g. 🙏🔥'
 
-    response = await session.prompt(content);
+      Make sure to use the words in the examples like "no cap", "skibidi", "rizz", "sigma", "main character", "shadow realm".
+      `,
+    });
+    const summarizer = await ai.summarizer.create({
+      sharedContext: "This is a Linkedin post",
+      length: 'medium',
+      format: 'plain-text',
+    })
+    
+    await session.ready;
+    await summarizer.ready;
+
+    const summary = await summarizer.summarize(content);
+    response = await session.prompt(summary);
   } catch (error) {
-   
-    return brainrotify(content);
+    return await brainrotify(content);
   }
 
   const conv = new showdown.Converter();
@@ -35,10 +50,7 @@ function traverseAndBrainrot(node, method) {
   return posts;
 }
 
-chrome.storage.sync.get(['brainrotEnabled', 'brainrotMethod'], (data) => {
-  
-  const posts = document.querySelectorAll(".feed-shared-update-v2__description")
-
+function addButtons(posts) {
   for (let i = 0; i < posts.length; i++) {
     let img = document.createElement('img');
     img.addEventListener("mouseout", () => {
@@ -47,7 +59,9 @@ chrome.storage.sync.get(['brainrotEnabled', 'brainrotMethod'], (data) => {
     img.addEventListener("mouseover", () => {
       img.src = "https://media.tenor.com/-O8iUQLR9dQAAAAi/maxwell-spin.gif";
     })
+
     posts[i].parentNode.insertBefore(img, posts[i]);
+
     img.style.width = "40px";
     img.style.height = "40px";
     img.src = "https://media.tenor.com/FYsjyvi3C7kAAAAi/rupert-cat.gif";
@@ -55,12 +69,50 @@ chrome.storage.sync.get(['brainrotEnabled', 'brainrotMethod'], (data) => {
     img.style.right = "100px";
     img.style.marginTop = "-55px";
     img.style.zIndex = "100";
-    // <p>an vo day de brain rot</p>
-    // <img src="link" />
+    img.style.cursor = "pointer";
+    img.brainrot = false;
+    const cache = posts[i].innerHTML;
+    img.onclick = () => {
+      if (img.brainrot) {
+        img.brainrot = false;
+        posts[i].innerHTML = cache;
+      } else {
+        img.brainrot = true;
+        brainrotify(posts[i].innerText).then((res) => {
+          posts[i].innerHTML = res;
+        });
+      }
+    }
   }
-  if (data.brainrotEnabled) {
-    traverseAndBrainrot(document.body, data.brainrotMethod || 'shuffle');
-  }
+}
+
+chrome.storage.sync.get(['brainrotEnabled', 'brainrotMethod'], (data) => {
+  
+  const posts = document.querySelectorAll(".feed-shared-update-v2__description")
+  addButtons(posts);
+  
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (!mutation.addedNodes) 
+        return
+
+
+      const newPosts = Array.from(mutation.addedNodes).filter((node) => node.nodeType === 1 && node.classList.contains('feed-shared-update-v2__description'));
+
+      if (!newPosts.length) {
+        return;
+      }
+
+      console.log(newPosts);
+      addButtons(newPosts);
+    });
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
+
 });
 
 // Trong listener
