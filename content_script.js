@@ -26,15 +26,30 @@ async function brainrotify(content) {
     await session.ready;
     await summarizer.ready;
 
+    console.log("Starting brainrotify");
+
     const summary = await summarizer.summarize(content);
     response = await session.prompt(summary);
   } catch (error) {
+    console.log(content, error);
     return await brainrotify(content);
   }
 
   const conv = new showdown.Converter();
 
+  console.log(response);
+
   return conv.makeHtml(response);
+}
+
+// Đổi loading chỗ này nè TODO
+function setLoadStyle(node) {
+  // Style của cái post
+  
+  node.style.color = "blue";
+
+  // Đây là thay chữ trong post
+  node.innerText = "Loading...";
 }
 
 function traverseAndBrainrot(node, method) {
@@ -71,15 +86,25 @@ function addButtons(posts) {
     img.style.zIndex = "100";
     img.style.cursor = "pointer";
     img.brainrot = false;
-    const cache = posts[i].innerHTML;
+    
+    const clone = posts[i].cloneNode(true);
+    const moreBtn = clone.querySelector("button");
+    moreBtn && moreBtn.remove();
+    const cache = clone.innerHTML;
+    const styleReset = clone.style;
+
     img.onclick = () => {
       if (img.brainrot) {
         img.brainrot = false;
         posts[i].innerHTML = cache;
       } else {
         img.brainrot = true;
-        brainrotify(posts[i].innerText).then((res) => {
+        setLoadStyle(posts[i]);        
+        brainrotify(clone.innerText).then((res) => {
           posts[i].innerHTML = res;
+          posts[i].style = styleReset;
+          posts[i].style.maxHeight = "none";
+          posts[i].style.display = "block";
         });
       }
     }
@@ -96,14 +121,12 @@ chrome.storage.sync.get(['brainrotEnabled', 'brainrotMethod'], (data) => {
       if (!mutation.addedNodes) 
         return
 
-
       const newPosts = Array.from(mutation.addedNodes).filter((node) => node.nodeType === 1 && node.classList.contains('feed-shared-update-v2__description'));
 
       if (!newPosts.length) {
         return;
       }
 
-      console.log(newPosts);
       addButtons(newPosts);
     });
   });
