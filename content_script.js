@@ -6,13 +6,18 @@ async function brainrotify(content) {
       topK: 50,
       format: "plain-text",
       systemPrompt: `You turn a normal text into a brainrot text and much more concise. For example:
-
+      
+      Normal: 'A huge thank you to all the students that I've had a chance to work with and speak with' Brainrot: 'Massive gyatt to all the rizzy students I've got to vibe with and yap with.'
       Normal: 'I'm hanging out with my family this weekend.' Brainrot: 'Boutta skibidi with the fam this weekend, no cap. 🤙🔥'
       Normal: 'What are you doing today?' Brainrot: 'Yo fr, what the skibidi you on today, bruh? 💀'
       Normal: 'He is so charismatic' Brainrot: 'Bro has so much rizz, he's a sigma for sure. 🚀🔥'
       Normal: 'I was driving my cool car' Brainrot: 'I was cruising my whip, giving main character energy. 🚗🔥'
       Normal: 'He is in trouble' Brainrot: 'He's in the shadow realm now. 💀'
       Normal: 'You helped me a lot' Brainrot: 'You're a real one, my g. 🙏🔥'
+      Normal: 'What are you learning?' Brainrot: 'What are you rizzing up, fam?'
+      Normal: 'I'm thankful for this person' Brainrot: 'I'm gyattful for this skibi moment.'
+
+
 
       You HAVE TO USE the words in the examples like "no cap", "skibidi", "rizz", "sigma", "main character", "shadow realm", make it one paragraph and ready to post on social media.
       `,
@@ -39,7 +44,18 @@ async function brainrotify(content) {
 
   const results = conv.makeHtml(response);
 
-  return results.replace(/<h1/g, '<h4').replace(/<\/h1/g, '</h4');
+  // Replace all h tag with p tag
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(results, 'text/html');
+  const hTags = doc.querySelectorAll('h1, h2, h3, h4, h5, h6');
+  hTags.forEach((tag) => {
+    const pTag = document.createElement('p');
+    pTag.innerHTML = tag.innerHTML;
+    tag.replaceWith(pTag);
+  });
+
+  return doc.body.innerHTML;
 }
 
 // Đổi loading chỗ này nè TODO
@@ -87,16 +103,40 @@ function addButtons(posts) {
     img.style.cursor = "pointer";
     img.brainrot = false;
     
+    
     const clone = posts[i].cloneNode(true);
     const moreBtn = clone.querySelector("button");
     moreBtn && moreBtn.remove();
     const cache = clone.innerHTML;
     const styleReset = clone.style;
+    let postImgContainer;
+    try {
+      postImgContainer = posts[i].parentNode.parentNode.querySelector(".feed-shared-update-v2__content").querySelector(".ivm-view-attr__img-wrapper");
+    } catch (e) {
+      console.log("Trying to find vid")
+    }
+
+    const memeList = ["chillguy.png", "subway.gif", "pop.gif", "sand.gif"]
+
+    const memeOverlay = document.createElement('img');
+    memeOverlay.src = chrome.runtime.getURL(`memes/${memeList[Math.floor(Math.random() * memeList.length)]}`);
+    memeOverlay.style.display = "none";
+    memeOverlay.style.position = "absolute";
+    memeOverlay.style.top = `${Math.random() * 50}%`;
+    memeOverlay.style.left = `${Math.random() * 60}%`;
+    memeOverlay.style.width = `${Math.random() * 40 + 20}%`;
+    memeOverlay.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+    if (postImgContainer) {
+      postImgContainer.style.overflow = "hidden";
+      postImgContainer.appendChild(memeOverlay);
+    }
 
     img.onclick = () => {
       if (img.brainrot) {
         img.brainrot = false;
         posts[i].innerHTML = cache;
+        memeOverlay.style.display = "none";
       } else {
         img.style.cursor = "wait";
         img.style.opacity = "0.5";
@@ -109,6 +149,8 @@ function addButtons(posts) {
           posts[i].style.display = "block";
           img.style.cursor = "pointer";
           img.style.opacity = "1";
+
+          memeOverlay.style.display = "block";
         });
       }
     }
