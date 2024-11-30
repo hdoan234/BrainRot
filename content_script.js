@@ -94,13 +94,12 @@ function addButtons(posts) {
     const styleReset = clone.style;
 
     img.onclick = () => {
-      img.style.pointer = "none";
-      img.style.opacity = "0.5";
       if (img.brainrot) {
         img.brainrot = false;
         posts[i].innerHTML = cache;
-        img.style.pointer = "pointer";
       } else {
+        img.style.cursor = "wait";
+        img.style.opacity = "0.5";
         img.brainrot = true;
         setLoadStyle(posts[i]);        
         brainrotify(clone.innerText).then((res) => {
@@ -108,7 +107,8 @@ function addButtons(posts) {
           posts[i].style = styleReset;
           posts[i].style.maxHeight = "none";
           posts[i].style.display = "block";
-          img.style.pointer = "pointer";
+          img.style.cursor = "pointer";
+          img.style.opacity = "1";
         });
       }
     }
