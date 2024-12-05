@@ -3,7 +3,7 @@ async function brainrotify(content) {
   try {
     const session = await ai.languageModel.create({
       temperature: 1.3,
-      topK: 50,
+      topK: 40,
       format: "plain-text",
       systemPrompt: `You turn a normal text into a brainrot text and much more concise. For example:
       
@@ -16,10 +16,10 @@ async function brainrotify(content) {
       Normal: 'You helped me a lot' Brainrot: 'You're a real one, my g. 🙏🔥'
       Normal: 'What are you learning?' Brainrot: 'What are you rizzing up, fam?'
       Normal: 'I'm thankful for this person' Brainrot: 'I'm gyattful for this skibi moment.'
+      Normal: 'It's good as a test but not feasible' Brainrot: 'It's goated for a test but not really a skibi reality.'
+      Normal: 'Meta celebrated the brilliance of women engineers in the semiconductor industry!' Brainrot: 'Meta celebrated the level 10 gyatt rizz of queen engineer shawties mogging the semiconductor game! Skibidi yes, Queen slay in the Ohio of processors!'
 
-
-
-      You HAVE TO USE the words in the examples like "no cap", "skibidi", "rizz", "sigma", "main character", "shadow realm", make it one paragraph and ready to post on social media.
+      You HAVE TO USE the words in the examples like "no cap", "skibidi", "rizz", "sigma", "main character", "shadow realm", make it one paragraph and MAKE SURE it's ready to post right away.
       `,
     });
     const summarizer = await ai.summarizer.create({
@@ -139,7 +139,10 @@ function addButtons(posts) {
       console.log("Trying to find vid")
     }
 
-    const memeList = ["chillguy.png", "subway.gif", "pop.gif", "sand.gif"]
+    // const memeList = ["chillguy.png", "subway.gif", "pop.gif", "sand.gif"]
+
+    const memeList = ["chillguy.png"]
+
 
     const memeOverlay = document.createElement('img');
     memeOverlay.src = chrome.runtime.getURL(`memes/${memeList[Math.floor(Math.random() * memeList.length)]}`);
