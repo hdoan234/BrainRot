@@ -139,10 +139,10 @@ function addButtons(posts) {
       console.log("Trying to find vid")
     }
 
-    // const memeList = ["chillguy.png", "subway.gif", "pop.gif", "sand.gif"]
-
-    const memeList = ["chillguy.png"]
-
+    const memeList = ["chillguy.png", "subway.gif", "pop.gif", "sand.gif", "ba.gif", "cat-annoyed.gif", "cat-wet.gif",
+                      "dog-sleep.gif", "hell.gif", "huh.gif" , "really.gif" ,"side-eye.gif", "sideeye.gif",
+                      "test.gif", "whoasked.gif", "whoaskedd.gif" ,"worker.png"
+    ]
 
     const memeOverlay = document.createElement('img');
     memeOverlay.src = chrome.runtime.getURL(`memes/${memeList[Math.floor(Math.random() * memeList.length)]}`);
