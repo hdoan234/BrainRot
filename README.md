@@ -6,6 +6,6 @@ Then clone this project with:
 git clone https://github.com/hdoan234/BrainRot
 ```
 
-In Chrome, open [chrome://extensions/](chrome://extensions/), click on `Load unpacked` and select the folder that just cloned.
+In Chrome, open [chrome://extensions/](chrome://extensions/), click on `Load unpacked` and select the folder that has just been cloned.
 
 Go to Linkedin and there should be a working spinning cat button.
